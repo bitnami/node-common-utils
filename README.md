@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/bitnami/node-common-utils.svg?branch=master)](http://travis-ci.org/bitnami/node-common-utils)
+
 #  Common Utils
 
 This package contains a set of wrappers for common CLI commands, as well as additional functions for working with directories and files.
