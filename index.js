@@ -82,7 +82,6 @@ function logExec(cmd, args, options) {
     options = args;
     args = [];
   }
-  args = _.toArrayIfNeeded(args);
   options = _.opts(options, {logger: null, runInBackground: false, retrieveStdStreams: false, detachStdStreams: false,
   stdoutFile: null, stderrFile: null, stdoutFileMode: 'a+', stderrFileMode: 'a+', env: {}});
 
