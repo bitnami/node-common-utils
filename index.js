@@ -90,10 +90,10 @@ function logExec(cmd, args, options) {
   let message = `Executing command: "${cmd}"`;
 
   if (!_.isEmpty(args)) {
-    if (args.length > 1) {
+    if (args.length > 1 && _.isArray(args)) {
       message += ` with arguments: ${JSON.stringify(args)}`;
     } else {
-      message += ` with a single argument: "${args[0]}"`;
+      message += ` with a single argument: "${_.isArray(args) ? args[0] : args}"`;
     }
   }
 
