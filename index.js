@@ -82,7 +82,6 @@ function logExec(cmd, args, options) {
     options = args;
     args = [];
   }
-  args = _.toArrayIfNeeded(args);
   options = _.opts(options, {logger: null, runInBackground: false, retrieveStdStreams: false, detachStdStreams: false,
   stdoutFile: null, stderrFile: null, stdoutFileMode: 'a+', stderrFileMode: 'a+', env: {}});
 
@@ -91,10 +90,10 @@ function logExec(cmd, args, options) {
   let message = `Executing command: "${cmd}"`;
 
   if (!_.isEmpty(args)) {
-    if (args.length > 1) {
+    if (_.isArray(args) && args.length > 1) {
       message += ` with arguments: ${JSON.stringify(args)}`;
     } else {
-      message += ` with a single argument: "${args[0]}"`;
+      message += ` with a single argument: "${_.isArray(args) ? args[0] : args}"`;
     }
   }
 
