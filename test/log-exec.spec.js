@@ -42,24 +42,24 @@ describe('#logExec()', () => {
   it('logs provided argument (one)', () => {
     logExec('true', '-l', {logger});
     expect(logger.buffer[0]).to.be
-      .eql({level: 'info', message: 'Executing command: "true" with a single argument: "-l"'});
+      .eql({level: 'info', message: 'Executing command: "true" "-l"'});
   });
 
   it('logs provided arguments (several)', () => {
     logExec('true', ['-l', 'h'], {logger});
     expect(logger.buffer[0]).to.be
-      .eql({level: 'info', message: 'Executing command: "true" with arguments: ["-l","h"]'});
+      .eql({level: 'info', message: 'Executing command: "true" "-l" "h"'});
   });
 
   it('doesn\'t log not provided environment variables', () => {
     logExec('true', {logger});
-    expect(logger.buffer[1].message).to.not.startsWith('ENVIRONMENT VARIABLES');
+    expect(logger.buffer[1]).to.be.empty;
   });
 
   it('logs provided environment variables', () => {
     const env = {var1: 'someContent'};
     logExec('true', {logger, env});
-    expect(logger.buffer[1].message).to.be.eql('ENVIRONMENT VARIABLES:\nvar1=someContent\n');
+    expect(logger.buffer[1].message).to.be.eql('ENVIRONMENT VARIABLES:\nvar1="someContent" ');
   });
 
   it('returns the output of the command', () => {
