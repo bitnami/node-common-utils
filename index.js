@@ -45,7 +45,7 @@ function _match(text, searchTerm) {
 
 function _objectToNatural(obj) {
   let msg = '';
-  _.each(obj, (v, k) => msg += `${k}=${v} `);
+  _.each(obj, (v, k) => msg += `${k}="${v}" `);
   return msg;
 }
 
