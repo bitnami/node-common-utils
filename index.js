@@ -83,8 +83,10 @@ function logExec(cmd, args, options) {
     options = args;
     args = [];
   }
-  options = _.defaults(options || {}, {logger: null, runInBackground: false, retrieveStdStreams: false, detachStdStreams: false,
-  stdoutFile: null, stderrFile: null, stdoutFileMode: 'a+', stderrFileMode: 'a+', env: {}});
+  options = _.defaults(options || {}, {
+    logger: null, runInBackground: false, retrieveStdStreams: false, detachStdStreams: false,
+    stdoutFile: null, stderrFile: null, stdoutFileMode: 'a+', stderrFileMode: 'a+', env: {}
+  });
 
   const logger = options.logger || _getDummyLogger();
   const envVars = options.env;
