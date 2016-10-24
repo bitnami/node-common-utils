@@ -23,7 +23,8 @@
   "dependencies": {
     "fs-extra": "^0.30.0",
     "jsonlint": "^1.6.2",
-    "nami-utils": "^0.1.0"
+    "nami-utils": "^0.1.0",
+    "lodash": "^4.16.1"
   },
   "devDependencies": {
     "bitnami-gulp-common-tasks": "bitnami/gulp-common-tasks#v2.0.4",
@@ -34,7 +35,6 @@
     "eslint-plugin-import": "^1.8.1",
     "gulp": "^3.9.1",
     "jsdoc": "^3.4.1",
-    "lodash": "^4.16.1",
     "nami-test": "0.0.1"
   }
 }
