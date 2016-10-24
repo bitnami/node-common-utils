@@ -23,7 +23,8 @@ function _noop() {}
 
 function _getDummyLogger() {
   const logger = {};
-  _.each(['info', 'error', 'trace', 'warn'], level => logger[level] = _noop);
+  _.each(['info', 'error', 'trace', 'warn',
+  'trace1', 'trace2', 'trace3', 'trace4', 'trace5', 'trace6', 'trace7', 'trace8'], level => logger[level] = _noop);
   return logger;
 }
 
@@ -44,7 +45,7 @@ function _match(text, searchTerm) {
 
 function _objectToNatural(obj) {
   let msg = '';
-  _.each(obj, (v, k) => msg += `${k}=${v}\n`);
+  _.each(obj, (v, k) => msg += `${k}="${v}" `);
   return msg;
 }
 
@@ -91,17 +92,20 @@ function logExec(cmd, args, options) {
 
   if (!_.isEmpty(args)) {
     if (_.isArray(args) && args.length > 1) {
-      message += ` with arguments: ${JSON.stringify(args)}`;
+      message += ` ${_.map(args, arg => `"${arg}"`).join(' ')}`;
     } else {
-      message += ` with a single argument: "${_.isArray(args) ? args[0] : args}"`;
+      message += ` "${_.isArray(args) ? args[0] : args}"`;
     }
   }
 
   logger.info(message);
 
-  if (!_.isEmpty(envVars)) logger.trace(`ENVIRONMENT VARIABLES:\n${_objectToNatural(_.omit(envVars, _.isEmpty))}`);
+  if (!_.isEmpty(envVars)) {
+    logger.trace(`ENVIRONMENT VARIABLES:\n${_objectToNatural(_.omitBy(envVars, _.isEmpty))}`);
+  }
 
-  return nos.runProgram(cmd, args, options);
+  // Run the command mutting its output to avoid duplicity
+  return nos.runProgram(cmd, args, _.assign(_.cloneDeep(options), {logger: _getDummyLogger()}));
 }
 
 

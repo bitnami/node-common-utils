@@ -1,6 +1,6 @@
 {
   "name": "common-utils",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Some common node functions",
   "main": "index.js",
   "scripts": {
