@@ -2,7 +2,7 @@
 
 const fs = require('fs-extra');
 const path = require('path');
-const _ = require('nami-utils/lodash-extra');
+const _ = require('lodash');
 const nos = require('nami-utils').os;
 const nfile = require('nami-utils').file;
 const jsonlint = require('jsonlint');
@@ -79,12 +79,14 @@ function _objectToNatural(obj) {
  * @throws {Error} - If command is not found or it returns exit code != 0
  */
 function logExec(cmd, args, options) {
-  if (_.isUndefined(options) && _.isReallyObject(args)) {
+  if (_.isUndefined(options) && _.isPlainObject(args)) {
     options = args;
     args = [];
   }
-  options = _.opts(options, {logger: null, runInBackground: false, retrieveStdStreams: false, detachStdStreams: false,
-  stdoutFile: null, stderrFile: null, stdoutFileMode: 'a+', stderrFileMode: 'a+', env: {}});
+  options = _.defaults(options || {}, {
+    logger: null, runInBackground: false, retrieveStdStreams: false, detachStdStreams: false,
+    stdoutFile: null, stderrFile: null, stdoutFileMode: 'a+', stderrFileMode: 'a+', env: {}
+  });
 
   const logger = options.logger || _getDummyLogger();
   const envVars = options.env;
@@ -121,8 +123,8 @@ function logExec(cmd, args, options) {
  * @throws {Error} - If no item found
  */
 function find(directories, searchTerm, options) {
-  options = _.opts(options, {cacheFile: null, findAll: false});
-  directories = _.toArrayIfNeeded(directories);
+  options = _.defaults(options || {}, {cacheFile: null, findAll: false});
+  directories = _.flatten([directories]);
   const occurences = [];
 
   if (_.isString(options.cacheFile) && nfile.exists(options.cacheFile)) {
@@ -163,7 +165,7 @@ function find(directories, searchTerm, options) {
  * @return {string[]} - List of directories
  */
 function listDirectories(srcPath, options) {
-  options = _.opts(options, {fullPath: true});
+  options = _.defaults(options || {}, {fullPath: true});
   const list = fs.readdirSync(srcPath);
   const directories = [];
   _.each(list, e => {
