@@ -119,14 +119,14 @@ function logExec(cmd, args, options) {
  * @param  {boolean} [options.findAll=false] - Search for all the ocurrences.
  * @param  {string} [options.cacheFile=null] - Apart from the directories, search inside a file with paths (one
  * line per path).
+ * @param  {number} [options.maxdepth=null] - Maximum depth of the search
  * @return {array|string} - Path of the item found or an array of them if {@linkcode options.findAll} is true
  * @throws {Error} - If no item found
  */
 function find(directories, searchTerm, options) {
-  options = _.defaults(options || {}, {cacheFile: null, findAll: false});
+  options = _.defaults(options || {}, {cacheFile: null, findAll: false, maxdepth: null});
   directories = _.flatten([directories]);
   const occurences = [];
-
   if (_.isString(options.cacheFile) && nfile.exists(options.cacheFile)) {
     nfile.eachLine(options.cacheFile, function(line) {
       if (_match(nfile.basename(line), searchTerm)) {
@@ -141,9 +141,12 @@ function find(directories, searchTerm, options) {
     _.each(directories, function(dir) {
       nfile.walkDir(dir, (f) => {
         if (_match(nfile.basename(f), searchTerm)) {
-          occurences.push(f);
-          // Returning false will make 'walkDir' stop
-          if (!options.findAll) return false;
+          const depth = nfile.split(nfile.relativize(f, dir)).length;
+          if (!options.maxdepth || depth <= options.maxdepth) {
+            occurences.push(f);
+            // Returning false will make 'walkDir' stop
+            if (!options.findAll) return false;
+          }
         }
       });
       // Returning false will make 'each' stop

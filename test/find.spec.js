@@ -101,6 +101,19 @@ describe('#find()', () => {
          f => s.normalize(f)));
   });
 
+  it('finds directories using maxdepth', () => {
+    s.createFilesFromManifest({
+      folder1: {
+        folder2: {
+          folder3: {}
+        },
+        folder3: {}
+      }
+    });
+    expect(find(s.normalize('folder1'), 'folder3', {maxdepth: 1, findAll: true})).to.be
+    .eql([s.normalize('folder1/folder3')]);
+  });
+
   it('throws error if directory not found', () => {
     s.createFilesFromManifest({
       folder1: {}
