@@ -101,6 +101,32 @@ describe('#find()', () => {
          f => s.normalize(f)));
   });
 
+  it('finds directories using maxDepth', () => {
+    s.createFilesFromManifest({
+      folder1: {
+        folder2: {
+          folder3: {}
+        },
+        folder3: {}
+      }
+    });
+    expect(find(s.normalize('folder1'), 'folder3', {maxDepth: 1, findAll: true})).to.be
+    .eql([s.normalize('folder1/folder3')]);
+  });
+
+  it('throws an error if no directory is found using maxDepth', () => {
+    s.createFilesFromManifest({
+      folder1: {
+        folder2: {
+          folder3: {}
+        }
+      }
+    });
+    expect(() => {
+      find(s.normalize('folder1'), 'folder3', {maxDepth: 1, findAll: true});
+    }).to.throw('Cannot find anything matching "folder3"');
+  });
+
   it('throws error if directory not found', () => {
     s.createFilesFromManifest({
       folder1: {}
