@@ -11,13 +11,6 @@ const jsonlint = require('jsonlint');
  * @namespace commonUtils
  */
 
-// TODO Remove this when a new version of nami-utils is published including the fix
-_.trimRight = _.runInContext().trimRight;
-_.trimEnd = _.runInContext().trimRight;
-_.trimLeft = _.runInContext().trimLeft;
-_.trimStart = _.runInContext().trimLeft;
-
-
 function _noop() {}
 
 
@@ -124,7 +117,7 @@ function logExec(cmd, args, options) {
  * @throws {Error} - If no item found
  */
 function find(directories, searchTerm, options) {
-  options = _.defaults(options || {}, {cacheFile: null, findAll: false, maxdepth: null});
+  options = _.defaults(options || {}, {cacheFile: null, findAll: false, maxDepth: Infinity});
   directories = _.flatten([directories]);
   const occurences = [];
   if (_.isString(options.cacheFile) && nfile.exists(options.cacheFile)) {
@@ -141,14 +134,11 @@ function find(directories, searchTerm, options) {
     _.each(directories, function(dir) {
       nfile.walkDir(dir, (f) => {
         if (_match(nfile.basename(f), searchTerm)) {
-          const depth = nfile.split(nfile.relativize(f, dir)).length;
-          if (!options.maxdepth || depth <= options.maxdepth) {
-            occurences.push(f);
-            // Returning false will make 'walkDir' stop
-            if (!options.findAll) return false;
-          }
+          occurences.push(f);
+          // Returning false will make 'walkDir' stop
+          if (!options.findAll) return false;
         }
-      });
+      }, {maxDepth: options.maxDepth});
       // Returning false will make 'each' stop
       if (!_.isEmpty(occurences) && !options.findAll) return false;
     });
