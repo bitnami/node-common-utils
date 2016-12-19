@@ -112,7 +112,7 @@ function logExec(cmd, args, options) {
  * @param  {boolean} [options.findAll=false] - Search for all the ocurrences.
  * @param  {string} [options.cacheFile=null] - Apart from the directories, search inside a file with paths (one
  * line per path).
- * @param  {number} [options.maxdepth=null] - Maximum depth of the search
+ * @param  {number} [options.maxDepth=null] - Maximum depth of the search
  * @return {array|string} - Path of the item found or an array of them if {@linkcode options.findAll} is true
  * @throws {Error} - If no item found
  */
