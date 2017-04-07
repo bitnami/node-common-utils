@@ -1,6 +1,6 @@
 {
   "name": "common-utils",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Some common node functions",
   "main": "index.js",
   "scripts": {
@@ -23,8 +23,9 @@
   "dependencies": {
     "fs-extra": "^0.30.0",
     "jsonlint": "^1.6.2",
-    "nami-utils": "^0.2.1",
-    "lodash": "^4.16.1"
+    "jsonschema": "^1.1.1",
+    "lodash": "^4.16.1",
+    "nami-utils": "^0.2.1"
   },
   "devDependencies": {
     "bitnami-gulp-common-tasks": "bitnami/gulp-common-tasks#v2.0.4",

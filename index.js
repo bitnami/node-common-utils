@@ -6,6 +6,7 @@ const _ = require('lodash');
 const nos = require('nami-utils').os;
 const nfile = require('nami-utils').file;
 const jsonlint = require('jsonlint');
+const Validator = require('jsonschema').Validator;
 
 /**
  * @namespace commonUtils
@@ -170,14 +171,25 @@ function listDirectories(srcPath, options) {
   return directories;
 }
 
-
 /**
- * Read and validate JSON file
- * @param  {string} file - JSON file to read
- * @return {Object} - Object with parsed content of file
- * @throws {Error} - If JSON file is not valid
+ * Validates an Object against a JSON schema
+ * @param  {Object} subject - Subject to validate
+ * @param  {Object} schema - JSON Schema to validate against
+ * @throws {Error} - If the subject doesn't satisfies the schema
  */
-function parseJSONFile(file) {
+function validate(object, schema) {
+  const v = new Validator();
+  v.addSchema(schema, schema.id);
+  const validationResult = v.validate(object, schema);
+  if (!_.isEmpty(validationResult.errors)) {
+    throw new Error(
+      `Invalid JSON for the schema ${schema.id}:\n` +
+      `${_.map(validationResult.errors, e => `${e.stack}`).join('\n')}`
+    );
+  }
+}
+
+function _parseJSONFile(file) {
   try {
     return jsonlint.parse(nfile.read(file));
   } catch (e) {
@@ -185,10 +197,30 @@ function parseJSONFile(file) {
   }
 }
 
+/**
+ * Read and validate JSON file
+ * @param  {string} file - JSON file to read
+ * @return {Object} - Object with parsed content of file
+ * @param  {Object} [options]
+ * @param  {string} [options.schemaFile] - Path to a JSON schema to validate the result
+ * @throws {Error} - If JSON file is not valid
+ */
+function parseJSONFile(file, options) {
+  options = _.defaults({}, options, {
+    schemaFile: null
+  });
+  const parsedObject = _parseJSONFile(file);
+  if (options.schemaFile) {
+    validate(parsedObject, _parseJSONFile(options.schemaFile));
+  }
+  return parsedObject;
+}
+
 
 module.exports = {
   logExec,
   find,
   listDirectories,
-  parseJSONFile
+  parseJSONFile,
+  validate,
 };
