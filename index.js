@@ -189,6 +189,14 @@ function validate(object, schema) {
   }
 }
 
+function _parseJSONFile(file) {
+  try {
+    return jsonlint.parse(nfile.read(file));
+  } catch (e) {
+    throw new Error(`Failed to parse file: ${file}. ${e.message}`);
+  }
+}
+
 /**
  * Read and validate JSON file
  * @param  {string} file - JSON file to read
@@ -201,14 +209,9 @@ function parseJSONFile(file, options) {
   options = _.defaults({}, options, {
     schemaFile: null
   });
-  let parsedObject = null;
-  try {
-    parsedObject = jsonlint.parse(nfile.read(file));
-  } catch (e) {
-    throw new Error(`Failed to parse file: ${file}. ${e.message}`);
-  }
+  const parsedObject = _parseJSONFile(file);
   if (options.schemaFile) {
-    validate(parsedObject, jsonlint.parse(nfile.read(options.schemaFile)));
+    validate(parsedObject, _parseJSONFile(options.schemaFile));
   }
   return parsedObject;
 }
