@@ -221,5 +221,6 @@ module.exports = {
   logExec,
   find,
   listDirectories,
-  parseJSONFile
+  parseJSONFile,
+  validate
 };
