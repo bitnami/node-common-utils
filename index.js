@@ -6,6 +6,7 @@ const _ = require('lodash');
 const nos = require('nami-utils').os;
 const nfile = require('nami-utils').file;
 const jsonlint = require('jsonlint');
+const Validator = require('jsonschema').Validator;
 
 /**
  * @namespace commonUtils
@@ -170,19 +171,46 @@ function listDirectories(srcPath, options) {
   return directories;
 }
 
+/**
+ * Validates an Object against a JSON schema
+ * @param  {Object} subject - Subject to validate
+ * @param  {Object} schema - JSON Schema to validate against
+ * @throws {Error} - If the subject doesn't satisfies the schema
+ */
+function validate(object, schema) {
+  const v = new Validator();
+  v.addSchema(schema, schema.id);
+  const validationResult = v.validate(object, schema);
+  if (!_.isEmpty(validationResult.errors)) {
+    throw new Error(
+      `Invalid JSON for the schema ${schema.id}:\n` +
+      `${_.map(validationResult.errors, e => `${e.stack}`).join('\n')}`
+    );
+  }
+}
 
 /**
  * Read and validate JSON file
  * @param  {string} file - JSON file to read
  * @return {Object} - Object with parsed content of file
+ * @param  {Object} [options]
+ * @param  {string} [options.schemaFile] - Path to a JSON schema to validate the result
  * @throws {Error} - If JSON file is not valid
  */
-function parseJSONFile(file) {
+function parseJSONFile(file, options) {
+  options = _.defaults({}, options, {
+    schemaFile: null
+  });
+  let parsedObject = null;
   try {
-    return jsonlint.parse(nfile.read(file));
+    parsedObject = jsonlint.parse(nfile.read(file));
   } catch (e) {
     throw new Error(`Failed to parse file: ${file}. ${e.message}`);
   }
+  if (options.schemaFile) {
+    validate(parsedObject, jsonlint.parse(nfile.read(options.schemaFile)));
+  }
+  return parsedObject;
 }
 
 
