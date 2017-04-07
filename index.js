@@ -222,5 +222,5 @@ module.exports = {
   find,
   listDirectories,
   parseJSONFile,
-  validate
+  validate,
 };
