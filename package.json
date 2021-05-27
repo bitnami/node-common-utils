@@ -37,6 +37,6 @@
     "eslint-plugin-import": "^1.8.1",
     "gulp": "^3.9.1",
     "jsdoc": "^3.4.1",
-    "nami-test": "github:bitnami/nami-utils#v0.0.1"
+    "nami-test": "github:bitnami/nami-test#v0.0.1"
   }
 }
