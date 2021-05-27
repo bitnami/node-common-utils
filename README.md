@@ -1,4 +1,4 @@
-[![Build Status](https://api.travis-ci.org/bitnami/node-common-utils.svg?branch=master)](http://travis-ci.org/bitnami/node-common-utils)
+[![Build Status](https://github.com/bitnami/node-common-utils/actions/workflows/main.yml/badge.svg)](https://github.com/bitnami/node-common-utils/actions/workflows/main.yml)
 
 #  Common Utils
 
