@@ -1,6 +1,6 @@
 {
   "name": "common-utils",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Some common node functions",
   "main": "index.js",
   "scripts": {
@@ -26,17 +26,17 @@
     "jsonlint": "^1.6.2",
     "jsonschema": "^1.1.1",
     "lodash": "^4.16.1",
-    "nami-utils": "github:bitnami/nami-utils#v2.0.1"
+    "nami-utils": "git+https://git@github.com/bitnami/nami-utils#v2.0.3"
   },
   "devDependencies": {
-    "bitnami-gulp-common-tasks": "github:bitnami/gulp-common-tasks#v2.0.4",
+    "bitnami-gulp-common-tasks": "git+https://git@github.com/bitnami/gulp-common-tasks#v2.0.4",
     "chai": "^3.5.0",
     "chai-string": "^1.2.0",
     "eslint": "^2.11.1",
-    "eslint-config-bitnami": "github:bitnami/eslint-config-bitnami#v1.0.0",
+    "eslint-config-bitnami": "git+https://git@github.com/bitnami/eslint-config-bitnami#v1.0.0",
     "eslint-plugin-import": "^1.8.1",
     "gulp": "^3.9.1",
     "jsdoc": "^3.4.1",
-    "nami-test": "github:bitnami/nami-test#v0.0.1"
+    "nami-test": "git+https://git@github.com/bitnami/nami-test#v1.0.3"
   }
 }
